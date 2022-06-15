@@ -1,0 +1,104 @@
+body {
+  margin: 0;
+  background-color: darkgray;
+  box-sizing: border-box;
+}
+.calculator {
+  margin: auto;
+  text-align: center;
+  width: fit-content;
+  transform: translate(0, 50%);
+}
+#input,
+#result {
+  margin: 0;
+  width: 100%;
+  padding: 0.65rem;
+  font-size: 1.25rem;
+  border: none;
+  outline: none;
+  text-align: right;
+  background-color: rgba(255, 255, 255, 0.548);
+  color: rgb(63, 60, 60);
+}
+#input {
+  border-radius: 0 0 0.4rem 0.4rem;
+}
+#result {
+  border-radius: 0.4rem 0.4rem 0 0;
+}
+button {
+  margin: 0;
+  padding: 0.65rem;
+  background-color: rgb(63, 60, 60);
+  color: #fff;
+  border: none;
+  border-radius: 0.4rem;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+.keypad {
+  margin-top: 0.4rem;
+
+  display: grid;
+  grid-template:
+    'n7 n8 n9 mult mult mult'
+    'n4 n5 n6 div div div'
+    'n1 n2 n3 subi subi subi'
+    'n0 n0 point addi addi addi'
+    'c c equal equal equal equal';
+  grid-gap: 0.5rem;
+}
+#n1 {
+  grid-area: n1;
+}
+#n2 {
+  grid-area: n2;
+}
+#n3 {
+  grid-area: n3;
+}
+#n4 {
+  grid-area: n4;
+}
+#n5 {
+  grid-area: n5;
+}
+#n6 {
+  grid-area: n6;
+}
+#n7 {
+  grid-area: n7;
+}
+#n8 {
+  grid-area: n8;
+}
+#n9 {
+  grid-area: n9;
+}
+#point {
+  grid-area: point;
+}
+#equal {
+  background-color: rgba(255, 255, 255, 0.548);
+  color: rgb(63, 60, 60);
+  grid-area: equal;
+}
+#mult {
+  grid-area: mult;
+}
+#div {
+  grid-area: div;
+}
+#add {
+  grid-area: addi;
+}
+#sub {
+  grid-area: subi;
+}
+#n0 {
+  grid-area: n0;
+}
+#clear {
+  grid-area: c;
+}
