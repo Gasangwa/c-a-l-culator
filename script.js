@@ -45,8 +45,6 @@ mult.addEventListener('click', function mult() {
 });
 eq.addEventListener('click', function display() {
   check();
-  let show = result.value;
-  result.value = show + pressedNumber + '=';
   pressedNumber = '';
   input.value = '';
   input.placeholder = resultShow;
@@ -78,6 +76,9 @@ function operation() {
     if (resultShow == 0) {
       resultShow = Number(pressedNumber);
     } else {
+      if (Number(pressedNumber) == 0) {
+        pressedNumber = '1';
+      }
       resultShow /= Number(pressedNumber);
     }
     result.value = resultShow + '/';
@@ -88,6 +89,9 @@ function operation() {
     if (resultShow == 0) {
       resultShow = Number(pressedNumber);
     } else {
+      if (Number(pressedNumber) == 0) {
+        pressedNumber = '1';
+      }
       resultShow *= Number(pressedNumber);
     }
     result.value = resultShow + '*';
@@ -97,12 +101,16 @@ function operation() {
 }
 function check() {
   if (id == 1) {
+    result.value = `${resultShow} + ${pressedNumber}  =`;
     resultShow += Number(pressedNumber);
   } else if (id == 2) {
+    result.value = `${resultShow} - ${pressedNumber}  =`;
     resultShow -= Number(pressedNumber);
   } else if (id == 4) {
+    result.value = `${resultShow} * ${pressedNumber}  =`;
     resultShow *= Number(pressedNumber);
   } else if (id == 3) {
+    result.value = `${resultShow} / ${pressedNumber}  =`;
     resultShow /= Number(pressedNumber);
   } else {
     resultShow = Number(pressedNumber);
