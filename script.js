@@ -1,122 +1,100 @@
+class calculator {
+  constructor(currentOperandTextElement, previousOperandTextElement) {
+    this.currentOperandTextElement = currentOperandTextElement;
+    this.previousOperandTextElement = previousOperandTextElement;
+    this.clear();
+  }
+  clear() {
+    this.currentOperand = '';
+    this.previousOperand = '';
+    this.operation = undefined;
+  }
+  delete() {
+    this.currentOperand = this.currentOperand.toString().slice(0, -1);
+  }
+  pressedNumber(number) {
+    if (number === '.' && this.currentOperand.includes('.')) return;
+    this.currentOperand = this.currentOperand.toString() + number.toString();
+  }
+  chooseOperation(operation) {
+    if (this.currentOperand === '') return;
+    if (this.previousOperand !== '') {
+      this.compute();
+    }
+    this.operation = operation;
+    this.previousOperand = this.currentOperand;
+    this.currentOperand = '';
+  }
+  compute() {
+    let computation;
+    const current = parseFloat(this.currentOperand);
+    const prev = parseFloat(this.previousOperand);
+    if (isNaN(current) || isNaN(prev)) return;
+    switch (this.operation) {
+      case '+':
+        computation = current + prev;
+        break;
+      case '-':
+        computation = current - prev;
+        break;
+      case '/':
+        computation = current / prev;
+        break;
+      case '*':
+        computation = current * prev;
+        break;
+      default:
+        return;
+    }
+    this.currentOperand = computation;
+    this.operation = undefined;
+    this.previousOperand = '';
+  }
+  updateDisplay(eq) {
+    if (eq == 1) {
+      this.currentOperandTextElement.value = '';
+      this.currentOperandTextElement.placeholder = this.currentOperand;
+      this.currentOperand = '';
+    } else {
+      this.currentOperandTextElement.placeholder = '0';
+      this.currentOperandTextElement.value = this.currentOperand;
+    }
+    if (this.operation != null) {
+      this.previousOperandTextElement.value = `${this.previousOperand} ${this.operation}`;
+    } else {
+      this.previousOperandTextElement.value = this.previousOperand;
+    }
+  }
+}
 var input = document.getElementById('input');
+var del = document.getElementById('del');
 var result = document.getElementById('result');
-var add = document.getElementById('add');
-var sub = document.getElementById('sub');
-var mult = document.getElementById('mult');
-var div = document.getElementById('div');
+var operation = document.querySelectorAll('[operation]');
 var cl = document.getElementById('clear');
 var eq = document.getElementById('equal');
 var no = document.querySelectorAll('[number]');
-var resultShow = 0;
-var pressedNumber = '';
-var id = 0;
-no.forEach((num) => {
-  num.addEventListener('click', () => {
-    if (id == 6) {
-      clear();
-      id = 0;
-    }
-    pressedNumber += num.value;
-    input.value += num.value;
+const calc = new calculator(input, result);
+no.forEach((button) => {
+  button.addEventListener('click', () => {
+    calc.pressedNumber(button.innerText);
+    calc.updateDisplay(0);
   });
 });
-cl.addEventListener('click', function cl() {
-  input.value = '';
-  input.placeholder = '0';
-  result.value = '';
-  pressedNumber = '';
-  resultShow = 0;
+operation.forEach((button) => {
+  button.addEventListener('click', () => {
+    calc.chooseOperation(button.innerText);
+    calc.updateDisplay(0);
+  });
 });
-add.addEventListener('click', function add() {
-  id = 1;
-  operation();
+eq.addEventListener('click', () => {
+  calc.compute();
+  calc.updateDisplay(1);
 });
-sub.addEventListener('click', function sub() {
-  id = 2;
-  operation();
+cl.addEventListener('click', () => {
+  calc.clear();
+  calc.updateDisplay(0);
 });
-div.addEventListener('click', function div() {
-  id = 3;
-  operation();
+del.addEventListener('click', () => {
+  calc.delete();
+  calc.updateDisplay(0);
 });
-mult.addEventListener('click', function mult() {
-  id = 4;
-  operation();
-});
-eq.addEventListener('click', function display() {
-  check();
-  pressedNumber = '';
-  input.value = '';
-  input.placeholder = resultShow;
-  id = 6;
-});
-function operation() {
-  if (id == 1) {
-    input.value = '';
-    if (resultShow == 0) {
-      resultShow = Number(pressedNumber);
-    } else {
-      resultShow += Number(pressedNumber);
-    }
-    result.value = resultShow + '+';
-    input.placeholder = resultShow;
-    pressedNumber = '';
-  } else if (id == 2) {
-    input.value = '';
-    if (resultShow == 0) {
-      resultShow = Number(pressedNumber);
-    } else {
-      resultShow -= Number(pressedNumber);
-    }
-    result.value = resultShow + '-';
-    input.placeholder = resultShow;
-    pressedNumber = '';
-  } else if (id == 3) {
-    input.value = '';
-    if (resultShow == 0) {
-      resultShow = Number(pressedNumber);
-    } else {
-      if (Number(pressedNumber) == 0) {
-        pressedNumber = '1';
-      }
-      resultShow /= Number(pressedNumber);
-    }
-    result.value = resultShow + '/';
-    input.placeholder = resultShow;
-    pressedNumber = '';
-  } else if (id == 4) {
-    input.value = '';
-    if (resultShow == 0) {
-      resultShow = Number(pressedNumber);
-    } else {
-      if (Number(pressedNumber) == 0) {
-        pressedNumber = '1';
-      }
-      resultShow *= Number(pressedNumber);
-    }
-    result.value = resultShow + '*';
-    input.placeholder = resultShow;
-    pressedNumber = '';
-  }
-}
-function check() {
-  if (id == 1) {
-    result.value = `${resultShow} + ${pressedNumber}  =`;
-    resultShow += Number(pressedNumber);
-  } else if (id == 2) {
-    result.value = `${resultShow} - ${pressedNumber}  =`;
-    resultShow -= Number(pressedNumber);
-  } else if (id == 4) {
-    result.value = `${resultShow} * ${pressedNumber}  =`;
-    resultShow *= Number(pressedNumber);
-  } else if (id == 3) {
-    result.value = `${resultShow} / ${pressedNumber}  =`;
-    resultShow /= Number(pressedNumber);
-  } else {
-    resultShow = Number(pressedNumber);
-  }
-}
-function clear() {
-  input.value = '';
-  result.value = '';
-}
